@@ -1,0 +1,13 @@
+---
+logging:
+  level:
+    root: INFO
+    com.cherashev: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    enabled: true
