@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
 
 @Component
-class CandlesHandler(val candlesService: CandlesService, val ticksClient: TicksClient) {
+class CandleHandler(val candlesService: CandlesService, val ticksClient: TicksClient) {
     fun startReceiving(request: ServerRequest?): Mono<ServerResponse> {
         ticksClient.subscribe()
 

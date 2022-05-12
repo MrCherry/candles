@@ -6,7 +6,9 @@ import org.reactivestreams.Subscription
 import org.springframework.stereotype.Component
 
 @Component
-class TicksSubscriber(val ticksProcessor: TicksProcessor) : Subscriber<String?> {
+class TicksSubscriber(
+    val ticksProcessor: TicksProcessor
+) : Subscriber<String?> {
     private val logger = KotlinLogging.logger {}
 
     override fun onSubscribe(s: Subscription) {

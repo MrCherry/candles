@@ -1,4 +1,12 @@
 ---
+candles:
+  ticksSourceUrl: ${TICKS_SOURCE_URL:ws://localhost:9989}
+
+spring:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+
 logging:
   level:
     root: INFO

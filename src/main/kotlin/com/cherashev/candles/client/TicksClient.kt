@@ -13,20 +13,29 @@ import reactor.core.publisher.Sinks.EmitFailureHandler
 import reactor.core.publisher.Sinks.EmitResult
 import java.net.URI
 import mu.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
 
 @Component
-class TicksClient(val ticksSubscriber: TicksSubscriber) {
+class TicksClient(
+    @Value("\${candles.ticksSourceUrl}")
+    val ticksSourceUrl: String,
+    val ticksSubscriber: TicksSubscriber
+) {
+
     private val logger = KotlinLogging.logger {}
-    private val uri: URI = URI.create("ws://localhost:9989")
+    private val uri: URI = URI.create(ticksSourceUrl)
+    private val client: WebSocketClient = ReactorNettyWebSocketClient()
     private lateinit var sessionMono: Disposable
 
     fun unsubscribe() {
-        sessionMono.dispose()
+        if (::sessionMono.isInitialized && !sessionMono.isDisposed)
+            sessionMono.dispose()
         logger.debug("WebSocketSession is disposed: ${sessionMono.isDisposed}")
     }
 
     fun subscribe() {
-        val client: WebSocketClient = ReactorNettyWebSocketClient()
+        if (::sessionMono.isInitialized && !sessionMono.isDisposed)
+            sessionMono.dispose()
 
         val sink: Sinks.Many<String> = Sinks.many().multicast().directBestEffort()
         val emitFailureHandler =
